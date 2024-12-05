@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'Store',
-]
+    
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
