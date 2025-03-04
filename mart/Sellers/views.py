@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from django.contrib.auth.hashers import make_password,check_password
-from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
 
 class SellerViewSet(viewsets.ModelViewSet):
@@ -44,7 +44,12 @@ class LoginView(APIView):
             password = serializer.validated_data.get("password")
             user = User.objects.filter(username=username).first()
             if user and check_password(password, user.password):
-                return Response({'message': "Login success"},status=status.HTTP_200_OK)
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                        'refresh': str(refresh),
+                        'access': str(refresh.access_token),
+                        'message': "Login success"
+                    }, status=status.HTTP_200_OK)
             else:
                 return Response({'error': "Invalid credentials"},status=status.HTTP_401_UNAUTHORIZED)
         return Response({'error': "Invalid data"},status=status.HTTP_404_NOT_FOUND)
