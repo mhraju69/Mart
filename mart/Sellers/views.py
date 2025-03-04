@@ -3,10 +3,11 @@ from django.shortcuts import render
 from .serializers import SellerSerializer
 from .models import User
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
-from django.contrib.auth.hashers import make_password
-
+from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth import authenticate
 # Create your views here.
 
 class SellerViewSet(viewsets.ModelViewSet):
@@ -22,7 +23,7 @@ class SellerViewSet(viewsets.ModelViewSet):
         if password != confirm_password :
             return Response({'error': "Password missmatch"},status= status.HTTP_308_PERMANENT_REDIRECT)
         
-        if User.objects.filter(email=data.get("email")).exists():
+        if User.objects.filter(username=data.get("username")).exists():
             return Response({'error': "Email already exist"},status= status.HTTP_207_MULTI_STATUS)
         
         seriallizer = self.get_serializer(data=data)
@@ -31,4 +32,27 @@ class SellerViewSet(viewsets.ModelViewSet):
             seriallizer.save( password = make_password(password))
         
             return Response({'message': "User registration success"},status= status.HTTP_201_CREATED)
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
     

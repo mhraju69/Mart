@@ -8,4 +8,10 @@ class SellerSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {"password": {"write_only": True}}
         
+class SellerLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        
+        
         

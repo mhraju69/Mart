@@ -6,7 +6,7 @@ from django.db import models
 class User(models.Model):
     full_name = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
@@ -15,4 +15,4 @@ class User(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.email
+        return self.username
