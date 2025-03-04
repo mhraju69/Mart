@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .serializers import SellerSerializer
+from .serializers import SellerSerializer, SellerLoginSerializer
 from .models import User
 from rest_framework import status
 from rest_framework.views import APIView
@@ -32,7 +32,25 @@ class SellerViewSet(viewsets.ModelViewSet):
             seriallizer.save( password = make_password(password))
         
             return Response({'message': "User registration success"},status= status.HTTP_201_CREATED)
-
+   
+   
+   
+   
+class LoginView(APIView):
+    def post(self,request,format=None):
+        serializer = SellerLoginSerializer(data= request.data)
+        if serializer.is_valid(raise_exception=True):
+            username = serializer.validated_data.get("username")
+            password = serializer.validated_data.get("password")
+            user = User.objects.filter(username=username).first()
+            if user and check_password(password, user.password):
+                return Response({'message': "Login success"},status=status.HTTP_200_OK)
+            else:
+                return Response({'error': "Invalid credentials"},status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': "Invalid data"},status=status.HTTP_404_NOT_FOUND)
+        
+           
+       
    
    
    
