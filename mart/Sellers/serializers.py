@@ -5,13 +5,17 @@ from .models import User
 class SellerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id','email','first_name','last_name','phone_number','address','birthdate','password']
         extra_kwargs = {"password": {"write_only": True}}
         
 class SellerLoginSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(max_length = 200)
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['email', 'password']
         
-        
-        
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','email','first_name','last_name']
+       
