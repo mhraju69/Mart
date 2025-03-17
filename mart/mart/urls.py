@@ -4,6 +4,7 @@ from django.urls import path,include
 from Sellers.views import*
 from Store.views import*
 from Products.views import*
+from dashboard.views import*
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
@@ -15,8 +16,8 @@ routers.register(r"product", productViewset ,basename="product")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(routers.urls)),
-    path('login/',LoginView.as_view(),name="login"),
-    path('profile/',UserProfileView.as_view(),name="profile")
+    path('api/login/',LoginView.as_view(),name="login_api"),
+    path('profile/',UserProfileView.as_view(),name="profile"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

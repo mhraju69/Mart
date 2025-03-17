@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.views import View
 from .serializers import *
 from .models import User
 from rest_framework import status
@@ -35,18 +35,19 @@ class SellerViewSet(viewsets.ModelViewSet):
             refresh = RefreshToken.for_user(user)
             return Response({'refresh': str(refresh),
                         'access': str(refresh.access_token),'message': "User registration success"},status= status.HTTP_201_CREATED)
-   
 
-   
-   
+def signup_view(request):
+    return render(request, 'signup.html')  
+
 class LoginView(APIView):
+    
     def post(self,request,format=None):
         serializer = SellerLoginSerializer(data= request.data)
         if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
             user = authenticate(email=email, password=password)
-            print(user,email,password)
+            print(email,password,user)
             if user is not None:
                 refresh = RefreshToken.for_user(user)
                 return Response({

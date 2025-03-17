@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "Sellers",
     'Store',
     "Products",
+    'dashboard'
 ]
 
 MIDDLEWARE = [
@@ -121,10 +122,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # ✅ Add this
     ),
+    
 }
-
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
@@ -134,6 +135,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:9000",
 ]
+
 
 STATIC_URL = '/static/' 
 STATICFILES_DIRS = [BASE_DIR / "static"]  
