@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 # Create your views here.
 
-class SellerViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = SellerSerializer
     

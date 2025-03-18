@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
 routers = DefaultRouter()
-routers.register(r"user", SellerViewSet,basename="user")
+routers.register(r"user", UserViewSet,basename="user")
 routers.register(r"stores", storeViewset ,basename="stores")
 routers.register(r"products", productViewset ,basename="products")
 
