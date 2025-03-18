@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = SellerSerializer
+    serializer_class = UserSerializer
     
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -43,7 +43,7 @@ def signup_view(request):
 class LoginView(APIView):
     
     def post(self,request,format=None):
-        serializer = SellerLoginSerializer(data= request.data)
+        serializer = UserLoginSerializer(data= request.data)
         if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")

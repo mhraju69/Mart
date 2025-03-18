@@ -30,7 +30,7 @@ INSTALLED_APPS = [
      "corsheaders",
     "rest_framework",
     'rest_framework_simplejwt',
-    "Sellers",
+    "User",
     'Store',
     "Products",
     'dashboard'
@@ -128,7 +128,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=240),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 CORS_ALLOWED_ORIGINS = [
@@ -144,4 +144,4 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTH_USER_MODEL = 'Sellers.User'
+AUTH_USER_MODEL = 'User.User'

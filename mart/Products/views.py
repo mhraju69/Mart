@@ -12,13 +12,14 @@ from django.shortcuts import get_object_or_404
 class productViewset(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
-    
+    lookup_field = "slug"
     def get_queryset(self):
         queryset = Products.objects.filter(store__user = self.request.user)
         store_id = self.request.query_params.get('store')
         if store_id:
             queryset = Products.objects.filter(store = store_id)
         return queryset
+    
     
     
     def create(self, request, *args, **kwargs):

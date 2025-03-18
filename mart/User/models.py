@@ -13,8 +13,8 @@ class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
+        extra_fields.setdefault('is_seller', False)
+        extra_fields['is_seller'] = False
         return self.create( email, password, **extra_fields)
 
 class User(AbstractBaseUser):
