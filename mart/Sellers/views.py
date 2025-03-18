@@ -19,8 +19,9 @@ class SellerViewSet(viewsets.ModelViewSet):
         data = request.data.copy()
         
         password = data.get("password")
-        confirm_password = data.get("confirm_password",None)
-        
+        confirm_password = data.pop("confirm_password",None)
+        if data.get('is_buyer','').strip().lower() == 'true' :
+            data["is_seller"] = False
         if password != confirm_password :
             return Response({'error': "Password missmatch"},status= status.HTTP_308_PERMANENT_REDIRECT)
         
