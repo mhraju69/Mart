@@ -87,6 +87,4 @@ class UserProfileView(APIView):
    
    
    
-   
-   
     
