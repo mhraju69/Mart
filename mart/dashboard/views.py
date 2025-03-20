@@ -12,18 +12,5 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class DashboardAPI(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]  
-    def user(self, request):
-        user = request.user
-        serializers = UserProfileSerializer(user)
-        return Response(serializers.data, status=status.HTTP_200_OK)
-    def get_store(self, request):
-        user = request.user
-        store = Store.objects.filter(user=user)
-        serializers = StoreSerializer(store, many=True)
-        return Response({"user": user.email, "stores": serializers.data}, status=status.HTTP_200_OK)
-    def get_product(self,request,store_slug):
-        products = Products.objects.filter(store__slug=store_slug)
-        serializers = ProductSerializer(products,many=True)
-        return Response({"Product": serializers.data}, status=status.HTTP_200_OK)
+    pass
         

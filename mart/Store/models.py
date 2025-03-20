@@ -6,7 +6,7 @@ class Store(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'is_seller': True})
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    store_slug = models.SlugField(unique=True)
     address = models.TextField()
     phone = models.CharField(max_length=15)
     email = models.EmailField()

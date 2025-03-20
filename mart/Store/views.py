@@ -14,11 +14,12 @@ class storeViewset(viewsets.ModelViewSet):
     queryset = Store.objects.all()
     serializer_class = StoreSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = "store_slug"
     def get_store(self, request,store_slug=None):
         user = request.user
         store = Store.objects.filter(user=user)
         if store_slug:
-            store = get_list_or_404(Store,user=user,slug=store_slug)
+            store = get_list_or_404(Store,user=user,store_slug=store_slug)
         serializers = StoreSerializer(store, many=True)
         return Response({"user": user.email, "stores": serializers.data}, status=status.HTTP_200_OK)
     
