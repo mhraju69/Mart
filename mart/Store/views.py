@@ -9,12 +9,13 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class storeViewset(viewsets.ModelViewSet):
-    
-    
-    queryset = Store.objects.all()
-    serializer_class = StoreSerializer
     permission_classes = [IsAuthenticated]
+    serializer_class = StoreSerializer
     lookup_field = "store_slug"
+    
+    def get_queryset(self):
+        return Store.objects.filter(user=self.request.user)
+    
     def get_store(self, request,store_slug=None):
         user = request.user
         store = Store.objects.filter(user=user)

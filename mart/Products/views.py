@@ -10,10 +10,12 @@ from django.shortcuts import get_object_or_404
 # Create your views here.
 
 class productViewset(viewsets.ModelViewSet):
-    queryset = Products.objects.all()
     serializer_class = ProductSerializer
     lookup_field = "product_slug"
 
+    def get_queryset(self):
+        return Products.objects.filter(store__user=self.request.user)
+    
     def get_product(self, request,store_slug=None,product_slug=None):
         user = request.user
         product = Products.objects.filter(store__user=user)
