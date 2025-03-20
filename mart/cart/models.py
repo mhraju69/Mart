@@ -4,7 +4,7 @@ from Products.models import *
 
 # Create your models here.
 
-class Cart(models.model):
+class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
 class CartItem(models.Model):
