@@ -19,4 +19,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id','email','first_name','last_name']
-       
+class changePassSerializer(serializers.ModelSerializer):
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+    class Meta:
+        model = User
+        fields = ['new_password','confirm_password']
+        
+        

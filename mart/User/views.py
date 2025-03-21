@@ -12,8 +12,13 @@ from django.contrib.auth import authenticate
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            return User.objects.none()
+        queryset = User.objects.filter(email=user.email)
+        return queryset
     
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -36,6 +41,33 @@ class UserViewSet(viewsets.ModelViewSet):
             refresh = RefreshToken.for_user(user)
             return Response({'refresh': str(refresh),
                         'access': str(refresh.access_token),'message': "User registration success"},status= status.HTTP_201_CREATED)
+
+
+    def perform_update(self, serializer):
+        
+        data = self.request.data
+        user =self.request.user
+        if 'password' in data:
+            current_password= data.get('password')
+            new_password= data.get('new_password')
+            confirm_password= data.get('confirm_password')
+            
+            if not new_password or not confirm_password :
+                raise serializers.ValidationError({'error': 'new_password and confirm_password is requred'})
+            
+            if  new_password != confirm_password or not user.check_password(current_password):
+                raise serializers.ValidationError({'error': 'Password mismatch'})
+            
+            serializer = changePassSerializer(data=data)
+            
+            if serializer.is_valid():
+                print(serializer.validated_data)
+                user.set_password(serializer.validated_data['new_password'])
+                user.save()
+                
+                return Response('Password Changed successfully',status=status.HTTP_200_OK)
+        serializer.save()
+
 
 def signup_view(request):
     return render(request, 'signup.html')  
