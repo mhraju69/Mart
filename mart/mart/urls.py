@@ -27,7 +27,7 @@ urlpatterns = [
     path('cart/',CartViewset.as_view({'get': 'get_cartitems'}),name='cartview'),
     path('cart:<slug:product_slug>/',CartViewset.as_view({'get': 'get_cartitems','post':'create','put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}),name='cartview'),
     path('reset-password/',SendResetPasswordEmailView.as_view(),name='send_reset_password_email'),
-
+    path('reset-password/<uid>/<token>/',ResetPasswordView.as_view(),name='reset_password'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

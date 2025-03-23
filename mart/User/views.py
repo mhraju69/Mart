@@ -117,6 +117,26 @@ class SendResetPasswordEmailView(APIView):
         else:
             raise serializers.ValidationError({'error':'Email not found'})
         
+        
+class ResetPasswordView(APIView):
+    def post(self,request,uid,token):
+        serializer = ResetPasswordSerializer(data=request.data,context={'uid':uid,'token':token})
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        uid = smart_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(id=uid)
+        if not PasswordResetTokenGenerator().check_token(user,token):
+            raise serializers.ValidationError({'error':'Token is invalid'})
+        if data.get('new_password') != data.get('confirm_password'):
+            raise serializers.ValidationError({'error':'Password mismatch'})
+        user.set_password(data.get('new_password'))
+        user.save()
+        return Response({'message': 'Password reset successful'},status=status.HTTP_200_OK)
+   
+   
+   
+   
+   
    
    
    
