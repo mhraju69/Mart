@@ -36,5 +36,3 @@ class resetPasswordSerializer(serializers.ModelSerializer):
 class ResetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
-    class Meta:
-        fields = ['new_password','confirm_password']

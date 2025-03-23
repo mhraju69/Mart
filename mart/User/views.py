@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .serializers import *
+from .utils import Utils
 from .models import User
 from rest_framework import status
 from rest_framework.views import APIView
@@ -99,7 +100,6 @@ class UserProfileView(APIView):
         
         return Response(serializers.data, status = status.HTTP_200_OK)
 
-   
 class SendResetPasswordEmailView(APIView):
     
     def post(self,request):
@@ -111,16 +111,20 @@ class SendResetPasswordEmailView(APIView):
             user = User.objects.get(email=data.get('email'))
             uid = urlsafe_base64_encode(force_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
-            link = f"http://localhost:8000/reset-password/{uid}/{token}"
+            link = f"http://http://127.0.0.1:8000/reset-password/{uid}/{token}"
             print(link,data)
+            Utils.send_email({
+                'subject': 'Password Reset',
+                'body': f'Click the link to reset your password {link}',
+                'to_email': user.email
+            })
             return Response({'message': 'Password reset link sent to your email'},status=status.HTTP_200_OK)
         else:
             raise serializers.ValidationError({'error':'Email not found'})
-        
-        
+             
 class ResetPasswordView(APIView):
     def post(self,request,uid,token):
-        serializer = ResetPasswordSerializer(data=request.data,context={'uid':uid,'token':token})
+        serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         uid = smart_str(urlsafe_base64_decode(uid))
