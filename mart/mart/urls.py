@@ -26,6 +26,7 @@ urlpatterns = [
     path('dashboard/store:<slug:store_slug>/product:<slug:product_slug>/', productViewset.as_view({'get': 'get_product', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}),name="single_product"),    
     path('cart/',CartViewset.as_view({'get': 'get_cartitems'}),name='cartview'),
     path('cart:<slug:product_slug>/',CartViewset.as_view({'get': 'get_cartitems','post':'create','put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}),name='cartview'),
+    path('reset-password/',SendResetPasswordEmailView.as_view(),name='send_reset_password_email'),
 
 ]
 if settings.DEBUG:

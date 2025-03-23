@@ -9,6 +9,9 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
+from django.utils.encoding import smart_str,force_bytes,DjangoUnicodeDecodeError
+from django.utils.http import   urlsafe_base64_encode,urlsafe_base64_decode
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -68,10 +71,6 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response('Password Changed successfully',status=status.HTTP_200_OK)
         serializer.save()
 
-
-def signup_view(request):
-    return render(request, 'signup.html')  
-
 class LoginView(APIView):
     
     def post(self,request,format=None):
@@ -92,10 +91,6 @@ class LoginView(APIView):
                 return Response({'error': "Invalid credentials"},status=status.HTTP_401_UNAUTHORIZED)
         return Response({'error': "Invalid data"},status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -105,13 +100,23 @@ class UserProfileView(APIView):
         return Response(serializers.data, status = status.HTTP_200_OK)
 
    
-   
-   
-   
-   
-   
-   
-   
+class SendResetPasswordEmailView(APIView):
+    
+    def post(self,request):
+        data = request.data
+        serializer = resetPasswordSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        if User.objects.filter(email=data.get('email')).exists():
+            user = User.objects.get(email=data.get('email'))
+            uid = urlsafe_base64_encode(force_bytes(user.id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            link = f"http://localhost:8000/reset-password/{uid}/{token}"
+            print(link,data)
+            return Response({'message': 'Password reset link sent to your email'},status=status.HTTP_200_OK)
+        else:
+            raise serializers.ValidationError({'error':'Email not found'})
+        
    
    
    

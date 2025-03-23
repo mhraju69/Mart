@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,6 +23,12 @@ class changePassSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = ['new_password','confirm_password']
+        fields = ['new_password']
         
+        
+class resetPasswordSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(max_length = 200)
+    class Meta:
+        model = User
+        fields = ['email']
         
